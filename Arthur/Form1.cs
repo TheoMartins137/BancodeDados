@@ -4,9 +4,9 @@ namespace Arthur
 {
     public partial class Form1 : Form
     {
-        public int? id_contato_selecionado = null;
+        public int ?id_contato_selecionado = null;
 
-        MySqlConnection Conexão;
+        MySqlConnection Conexao;
         private string data_source = "datasource=localhost;username=root;password=;database=aulas_arthur";
 
         public Form1()
@@ -26,53 +26,138 @@ namespace Arthur
             ltvMostrar.Columns.Add("Nome", 150, HorizontalAlignment.Left);
             ltvMostrar.Columns.Add("Email", 150, HorizontalAlignment.Left);
             ltvMostrar.Columns.Add("Telefone", 150, HorizontalAlignment.Left);
+
+            carregar_contatos();
+        }
+
+        private void carregar_contatos()
+        {
+            try
+            {
+                Conexao = new MySqlConnection(data_source);
+                Conexao.Open();
+
+                string sql = "SELECT * FROM contato ORDER BY id ASC";
+
+                MySqlCommand buscar = new MySqlCommand(sql, Conexao);
+                MySqlDataReader reader = buscar.ExecuteReader();
+
+                ltvMostrar.Items.Clear();
+
+                while (reader.Read())
+                {
+                    string[] row =
+                    {
+                        reader.GetInt32(0).ToString(),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        reader.GetString(3),
+                    };
+
+                    var linha_list_view = new ListViewItem(row);
+                    ltvMostrar.Items.Add(linha_list_view);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Conexao.Close();
+            }
         }
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             try
             {
-                Conexão = new MySqlConnection(data_source); // abre a conexão do banco de dados
-                Conexão.Open();
+
+                // Criar a Conexao com o MySQL
+                Conexao = new MySqlConnection(data_source);
+                Conexao.Open();
                 MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = Conexão;
+                cmd.Connection = Conexao;
 
-                cmd.CommandText = "INSERT INTO contato(nome, email, telefone)" +
-                                  "VALUES(@nome, @email, @telefone)";
+                // Habilitando o Update para o meu botão salvar
 
-                cmd.Parameters.AddWithValue("@nome", txtNome.Text);
-                cmd.Parameters.AddWithValue("@email", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
+                if (id_contato_selecionado == null)
+                {
+                    // insert
+                    cmd.Parameters.Clear(); // limpa os parâmetros antigos
+                    cmd.CommandText =
+                        "INSERT INTO contato " +
+                        "(nome, email, telefone) " +
+                        "VALUES " +
+                        "(@nome, @email, @telefone)";
 
-                cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@nome", txtNome.Text);
+                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                    cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
 
-                MessageBox.Show("Dados inseridos com sucesso!");
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Contato Inserido com Sucesso", "Sucesso",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+                else
+                {
+                    // update
+                    cmd.Parameters.Clear(); // limpa os parâmetros antigos
+                    cmd.CommandText =
+                        "UPDATE contato " +
+                        "SET nome = @nome, email = @email, telefone = @telefone " +
+                        "WHERE id = @id";
+
+                    cmd.Parameters.AddWithValue("@nome", txtNome.Text);
+                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                    cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
+                    cmd.Parameters.AddWithValue("@id", id_contato_selecionado);
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Contato Atualizado com Sucesso", "Sucesso",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
 
 
-                //string de conexão para acessar o banco
-                //insere os valores do formalário para dentro do banco de dados
-                //string sql = "INSERT INTO contato (nome, email, telefone)" + "VALUES" + "(' " + txtNome.Text + " ' , ' " + txtEmail.Text + " ' , ' " + txtTelefone.Text + " ')";
 
-                //MySqlCommand insert = new MySqlCommand(sql, Conexão);
+                /* string sql = "INSERT INTO contato (nome, email, telefone) VALUES ('" + txtNome.Text + "','" + txtEmail.Text + "','" + txtTelefone.Text + "')";
 
-                //insert.ExecuteReader();
+                // Executar Comando Insert
+                MySqlCommand insert = new MySqlCommand(sql, Conexao);
+
+                Conexao.Open();
+                insert.ExecuteReader(); */
+
+
+                // Mostrando a Mensagem para o Usuário
+                //MessageBox.Show("Dados Inseridos com Sucesso!!!");
+                // apagando o formulario após a inserção dos dados
+                id_contato_selecionado = null;
+                txtNome.Text = String.Empty;
+                txtEmail.Text = String.Empty;
+                txtTelefone.Text = String.Empty;
+
+                carregar_contatos();
 
             }
-
             catch (MySqlException ex)
+
             {
                 MessageBox.Show("Error " + "has occured: " + ex.Message,
-                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+            }
             catch (Exception ex)
             {
                 MessageBox.Show("Has occured: " + ex.Message,
-                   "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
-                Conexão.Close();
+                Conexao.Close();
             }
         }
 
@@ -81,8 +166,8 @@ namespace Arthur
 
             try
             {
-                Conexão = new MySqlConnection(data_source);
-                Conexão.Open();
+                Conexao = new MySqlConnection(data_source);
+                Conexao.Open();
                 string q = "%" + txtProcurar.Text + "%";
                 // q = nome referente ao textbox
 
@@ -90,7 +175,7 @@ namespace Arthur
 
 
                 // Buscar as informações
-                MySqlCommand buscar = new MySqlCommand(sql, Conexão);
+                MySqlCommand buscar = new MySqlCommand(sql, Conexao);
                 buscar.Parameters.AddWithValue("@q", q);
 
                 // armazenar as informações para mostrar na tela
@@ -119,16 +204,30 @@ namespace Arthur
             }
             finally
             {
-                Conexão.Close();
+                Conexao.Close();
             }
 
         }
 
         private void ltvMostrar_SelectedIndexChanged(object sender, EventArgs e)
         {
+            /*ListView.SelectedListViewItemCollection itens_selecionados = ltvMostrar.SelectedItems;
+
+            foreach (ListViewItem item in itens_selecionados)
+            {
+                id_contato_selecionado = Convert.ToInt32(item.SubItems[0].Text);
+                txtNome.Text = item.SubItems[1].Text;
+                txtEmail.Text = item.SubItems[2].Text;
+                txtTelefone.Text = item.SubItems[3].Text;
+
+            }*/
+        }
+
+        private void ltvMostrar_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
             ListView.SelectedListViewItemCollection itens_selecionados = ltvMostrar.SelectedItems;
 
-            foreach(ListViewItem item in itens_selecionados)
+            foreach (ListViewItem item in itens_selecionados)
             {
                 id_contato_selecionado = Convert.ToInt32(item.SubItems[0].Text);
                 txtNome.Text = item.SubItems[1].Text;

@@ -105,6 +105,7 @@
             ltvMostrar.Size = new Size(563, 115);
             ltvMostrar.TabIndex = 7;
             ltvMostrar.UseCompatibleStateImageBehavior = false;
+            ltvMostrar.ItemSelectionChanged += ltvMostrar_ItemSelectionChanged;
             ltvMostrar.SelectedIndexChanged += ltvMostrar_SelectedIndexChanged;
             // 
             // txtProcurar
