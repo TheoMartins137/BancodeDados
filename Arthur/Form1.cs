@@ -233,7 +233,6 @@ namespace Arthur
                 txtNome.Text = item.SubItems[1].Text;
                 txtEmail.Text = item.SubItems[2].Text;
                 txtTelefone.Text = item.SubItems[3].Text;
-
             }
         }
     }
