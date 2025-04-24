@@ -42,6 +42,7 @@
             lstLista.Size = new Size(360, 197);
             lstLista.TabIndex = 11;
             lstLista.UseCompatibleStateImageBehavior = false;
+            lstLista.ItemSelectionChanged += lstLista_ItemSelectionChanged;
             // 
             // txtID
             // 

@@ -33,7 +33,7 @@ namespace Ex_23_04
             lstLista.Columns.Add("ID", 30, HorizontalAlignment.Left);
             lstLista.Columns.Add("Nome", 150, HorizontalAlignment.Left);
             lstLista.Columns.Add("CPF", 75, HorizontalAlignment.Left);
-            lstLista.Columns.Add("Telefone", 75, HorizontalAlignment.Left);
+            lstLista.Columns.Add("Telefone", 100, HorizontalAlignment.Left);
 
             MostrarPessoas();
         }
@@ -63,9 +63,10 @@ namespace Ex_23_04
                 else
                 {
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "UPDATE pessoa" +
-                                      "SET nome = @nome, cpf = @cpf, telefone = @telefone" +
-                                      "WHERE id = @id";
+                    cmd.CommandText = 
+                        "UPDATE pessoa " +
+                        "SET nome = @nome, cpf = @cpf, telefone = @telefone " +
+                        "WHERE id = @id";
 
                     cmd.Parameters.AddWithValue("@nome", txtNome.Text);
                     cmd.Parameters.AddWithValue("@cpf", txtCPF.Text);
