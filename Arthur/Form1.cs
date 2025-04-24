@@ -143,22 +143,22 @@ namespace Arthur
                 carregar_contatos();
 
             }
-            catch (MySqlException ex)
+                catch (MySqlException ex)
 
-            {
-                MessageBox.Show("Error " + "has occured: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                {
+                    MessageBox.Show("Error " + "has occured: " + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Has occured: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Conexao.Close();
-            }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Has occured: " + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Conexao.Close();
+                }
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
