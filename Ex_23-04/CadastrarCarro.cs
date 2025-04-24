@@ -33,6 +33,8 @@ namespace Ex_23_04
             lstLista.Columns.Add("Marca", 150, HorizontalAlignment.Left);
             lstLista.Columns.Add("Modelo", 75, HorizontalAlignment.Left);
             lstLista.Columns.Add("Id do Proprietário", 100, HorizontalAlignment.Left);
+
+            MostrarCarro();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -52,7 +54,7 @@ namespace Ex_23_04
 
                     cmd.Parameters.AddWithValue("@marca", txtMarca.Text);
                     cmd.Parameters.AddWithValue("@modelo", txtModelo.Text);
-                    cmd.Parameters.AddWithValue("@id_proprietario", txtID.Text);
+                    cmd.Parameters.AddWithValue("@id_proprietario", Convert.ToInt32(txtID.Text));
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Carro cadastrado com Sucesso");
@@ -66,14 +68,17 @@ namespace Ex_23_04
 
                     cmd.Parameters.AddWithValue("@marca", txtMarca.Text);
                     cmd.Parameters.AddWithValue("@modelo", txtModelo.Text);
-                    cmd.Parameters.AddWithValue("@id_proprietario", txtID.Text);
+                    cmd.Parameters.AddWithValue("@id_proprietario", Convert.ToInt32(txtID.Text));
                     cmd.Parameters.AddWithValue("@id", id_carro.ToString());
+
+                    MessageBox.Show("Carro atualizado com sucesso");
                 }
 
                 id_carro = null;
                 txtID.Clear();
                 txtMarca.Clear();
                 txtModelo.Clear();
+                MostrarCarro();
             }
             catch (MySqlException ex)
 
@@ -111,7 +116,39 @@ namespace Ex_23_04
 
         private void MostrarCarro()
         {
+            try
+            {
+                Conexao = new MySqlConnection(data_source);
+                Conexao.Open();
+                string sql = "SELECT * FROM carro ORDER BY id ASC";
+                MySqlCommand buscar = new MySqlCommand(sql, Conexao);
+                MySqlDataReader reader = buscar.ExecuteReader();
 
+                lstLista.Items.Clear();
+
+                while (reader.Read())
+                {
+                    string[] row =
+                    {
+                        reader.GetInt32(0).ToString(),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        reader.GetInt32(3).ToString()
+                    };
+
+                    var linha_list_view = new ListViewItem(row);
+                    lstLista.Items.Add(linha_list_view);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Conexao.Close();
+            }
         }
     }
 }
