@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             btnConfirm = new Button();
             lblNome = new Label();
             lblEmail = new Label();
@@ -38,13 +39,17 @@
             ltvMostrar = new ListView();
             txtProcurar = new TextBox();
             btnPesquisar = new Button();
+            ContextMenuStrip = new ContextMenuStrip(components);
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            btnExluir = new Button();
+            ContextMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // btnConfirm
             // 
-            btnConfirm.Location = new Point(26, 167);
+            btnConfirm.Location = new Point(120, 166);
             btnConfirm.Name = "btnConfirm";
-            btnConfirm.Size = new Size(175, 23);
+            btnConfirm.Size = new Size(81, 23);
             btnConfirm.TabIndex = 0;
             btnConfirm.Text = "Confirmar";
             btnConfirm.UseVisualStyleBackColor = true;
@@ -107,6 +112,7 @@
             ltvMostrar.UseCompatibleStateImageBehavior = false;
             ltvMostrar.ItemSelectionChanged += ltvMostrar_ItemSelectionChanged;
             ltvMostrar.SelectedIndexChanged += ltvMostrar_SelectedIndexChanged;
+            ltvMostrar.Click += toolStripMenuItem1_Click;
             // 
             // txtProcurar
             // 
@@ -125,11 +131,37 @@
             btnPesquisar.UseVisualStyleBackColor = true;
             btnPesquisar.Click += btnPesquisar_Click;
             // 
+            // ContextMenuStrip
+            // 
+            ContextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
+            ContextMenuStrip.Name = "ContextMenuStrip";
+            ContextMenuStrip.Size = new Size(110, 26);
+            ContextMenuStrip.Text = "Excluir";
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(109, 22);
+            toolStripMenuItem1.Text = "Excluir";
+            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            // 
+            // btnExluir
+            // 
+            btnExluir.Location = new Point(26, 166);
+            btnExluir.Name = "btnExluir";
+            btnExluir.Size = new Size(81, 23);
+            btnExluir.TabIndex = 11;
+            btnExluir.Text = "Excluir";
+            btnExluir.UseVisualStyleBackColor = true;
+            btnExluir.Visible = false;
+            btnExluir.Click += btnExluir_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(819, 218);
+            Controls.Add(btnExluir);
             Controls.Add(btnPesquisar);
             Controls.Add(txtProcurar);
             Controls.Add(ltvMostrar);
@@ -142,6 +174,8 @@
             Controls.Add(btnConfirm);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
+            ContextMenuStrip.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -158,5 +192,8 @@
         private ListView ltvMostrar;
         private TextBox txtProcurar;
         private Button btnPesquisar;
+        private ContextMenuStrip ContextMenuStrip;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private Button btnExluir;
     }
 }

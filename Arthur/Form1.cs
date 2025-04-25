@@ -4,7 +4,7 @@ namespace Arthur
 {
     public partial class Form1 : Form
     {
-        public int ?id_contato_selecionado = null;
+        public int? id_contato_selecionado = null;
 
         MySqlConnection Conexao;
         private string data_source = "datasource=localhost;username=root;password=;database=aulas_arthur";
@@ -28,6 +28,15 @@ namespace Arthur
             ltvMostrar.Columns.Add("Telefone", 150, HorizontalAlignment.Left);
 
             carregar_contatos();
+        }
+
+        private void limpar_tudo()
+        {
+            id_contato_selecionado = null;
+            txtNome.Clear();
+            txtEmail.Clear();
+            txtTelefone.Clear();
+            txtNome.Focus();
         }
 
         private void carregar_contatos()
@@ -143,22 +152,22 @@ namespace Arthur
                 carregar_contatos();
 
             }
-                catch (MySqlException ex)
+            catch (MySqlException ex)
 
-                {
-                    MessageBox.Show("Error " + "has occured: " + ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            {
+                MessageBox.Show("Error " + "has occured: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Has occured: " + ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    Conexao.Close();
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Has occured: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Conexao.Close();
+            }
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
@@ -234,6 +243,67 @@ namespace Arthur
                 txtEmail.Text = item.SubItems[2].Text;
                 txtTelefone.Text = item.SubItems[3].Text;
             }
+
+            btnExluir.Visible = true;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            //excluir_contato();
+        }
+
+        private void excluir_contato()
+        {
+            try
+            {
+
+                DialogResult conf = MessageBox.Show("Deseja excluir o contato?", "EXCLUIR!", MessageBoxButtons.YesNo);
+
+                if (conf == DialogResult.Yes)
+                {
+                    Conexao = new MySqlConnection(data_source);
+                    Conexao.Open();
+                    MySqlCommand cmd = new MySqlCommand();
+                    cmd.Connection = Conexao;
+
+                    cmd.CommandText = "DELETE FROM contato WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id_contato_selecionado);
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Contato excluido com sucesso");
+
+                    carregar_contatos();
+                    limpar_tudo();
+
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Erro " + ex.Number + "Ocorreu: " + ex.Message,
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Ocorreu: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            finally
+            {
+                Conexao.Close();
+            }
+        }
+
+        private void btnExluir_Click(object sender, EventArgs e)
+        {
+            excluir_contato();
         }
     }
 }
