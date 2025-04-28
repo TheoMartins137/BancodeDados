@@ -88,7 +88,10 @@
             Controls.Add(txtModelo);
             Controls.Add(txtMarca);
             Controls.Add(button1);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "CadastrarCarro";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "CadastrarCarro";
             ResumeLayout(false);
             PerformLayout();

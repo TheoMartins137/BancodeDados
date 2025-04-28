@@ -88,7 +88,10 @@
             Controls.Add(txtCPF);
             Controls.Add(txtNome);
             Controls.Add(button1);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "CadastroPessoa";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "CadastroPessoa";
             ResumeLayout(false);
             PerformLayout();

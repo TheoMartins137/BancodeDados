@@ -254,7 +254,7 @@ namespace Arthur
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //excluir_contato();
+            excluir_contato();
         }
 
         private void excluir_contato()

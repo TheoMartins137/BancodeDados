@@ -31,7 +31,7 @@
             menuStrip1 = new MenuStrip();
             mnuPessoa = new ToolStripMenuItem();
             mnuCarro = new ToolStripMenuItem();
-            listView1 = new ListView();
+            lstJoin = new ListView();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -40,7 +40,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { mnuPessoa, mnuCarro });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(695, 24);
+            menuStrip1.Size = new Size(387, 24);
             menuStrip1.TabIndex = 2;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -58,23 +58,26 @@
             mnuCarro.Text = "Cadastrar Carro";
             mnuCarro.Click += mnuCarro_Click;
             // 
-            // listView1
+            // lstJoin
             // 
-            listView1.Location = new Point(12, 27);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(667, 284);
-            listView1.TabIndex = 3;
-            listView1.UseCompatibleStateImageBehavior = false;
+            lstJoin.Location = new Point(12, 27);
+            lstJoin.Name = "lstJoin";
+            lstJoin.Size = new Size(363, 284);
+            lstJoin.TabIndex = 3;
+            lstJoin.UseCompatibleStateImageBehavior = false;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(695, 324);
-            Controls.Add(listView1);
+            ClientSize = new Size(387, 324);
+            Controls.Add(lstJoin);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Main";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Main";
             Load += Form1_Load;
             menuStrip1.ResumeLayout(false);
@@ -87,6 +90,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem mnuPessoa;
         private ToolStripMenuItem mnuCarro;
-        private ListView listView1;
+        private ListView lstJoin;
     }
 }
